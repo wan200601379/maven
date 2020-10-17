@@ -47,18 +47,14 @@ final class RemoteSnapshotMetadata
 
     private final Map<String, SnapshotVersion> versions = new LinkedHashMap<>();
 
-    private final Date timestamp;
-
     RemoteSnapshotMetadata( Artifact artifact, boolean legacyFormat, Date timestamp )
     {
-        super( createRepositoryMetadata( artifact, legacyFormat ), null, legacyFormat );
-        this.timestamp = timestamp;
+        super( createRepositoryMetadata( artifact, legacyFormat ), null, legacyFormat, timestamp );
     }
 
     private RemoteSnapshotMetadata( Metadata metadata, File file, boolean legacyFormat, Date timestamp )
     {
-        super( metadata, file, legacyFormat );
-        this.timestamp = timestamp;
+        super( metadata, file, legacyFormat, timestamp );
     }
 
     public MavenMetadata setFile( File file )
@@ -90,7 +86,7 @@ final class RemoteSnapshotMetadata
 
             Versioning versioning = new Versioning();
             versioning.setSnapshot( snapshot );
-            versioning.setLastUpdated( snapshot.getTimestamp().replace( ".", "" ) );
+            versioning.setLastUpdatedTimestamp( timestamp );
             lastUpdated = versioning.getLastUpdated();
 
             metadata.setVersioning( versioning );
