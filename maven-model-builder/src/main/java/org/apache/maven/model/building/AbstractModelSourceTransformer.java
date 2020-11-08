@@ -90,8 +90,6 @@ public abstract class AbstractModelSourceTransformer
         final TransformerHandler transformerHandler = getTransformerHandler( pomFile );
 
         final PipedOutputStream pout = new PipedOutputStream();
-        final PipedInputStream pipedInputStream = new PipedInputStream( pout );
-        
         OutputStream out = filterOutputStream( pout, pomFile );
 
         final javax.xml.transform.Result result;
@@ -149,7 +147,9 @@ public abstract class AbstractModelSourceTransformer
 
         IOExceptionHandler eh = new IOExceptionHandler();
 
-        
+        // Ensure pipedStreams are connected before the transformThread starts!!
+        final PipedInputStream pipedInputStream = new PipedInputStream( pout );
+
         Thread transformThread = new Thread( () -> 
         {
             try ( PipedOutputStream pos = pout )
