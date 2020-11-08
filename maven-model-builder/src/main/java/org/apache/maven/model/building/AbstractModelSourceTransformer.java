@@ -90,6 +90,7 @@ public abstract class AbstractModelSourceTransformer
         final TransformerHandler transformerHandler = getTransformerHandler( pomFile );
 
         final PipedOutputStream pout = new PipedOutputStream();
+        final PipedInputStream pipedInputStream = new PipedInputStream( pout );
         
         OutputStream out = filterOutputStream( pout, pomFile );
 
@@ -164,7 +165,7 @@ public abstract class AbstractModelSourceTransformer
         transformThread.setDaemon( true );
         transformThread.start();
         
-        return new ThreadAwareInputStream( new PipedInputStream( pout ), eh );
+        return new ThreadAwareInputStream( pipedInputStream, eh );
     }
 
     private static class IOExceptionHandler
